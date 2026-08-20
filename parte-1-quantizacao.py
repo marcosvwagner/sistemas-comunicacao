@@ -8,10 +8,10 @@ st.header("parte 1 - exercicio")
 dt = 1e-6    # Passo de tempo continuo [s]
 fa = 8.0     # Taxa de amostragem [amostras/s]
 ta = 1/fa    # Periodo de amostragem [s]
-L = 8        # Nº de nivels de quantização
-delta = 2.0  # Passo de quantizaçao [v]
+L = 16        # Nº de nivels de quantização
+delta = 1.0  # Passo de quantizaçao [v]
 t0 = 0.0     # Tempo inicial do intervalo de simulação [s]
-tf = 1.0     # Tempo final de simulação [s]
+tf = 2.0     # Tempo final de simulação [s]
 
 # Mensagem
 ts = np.arange(t0,tf, step=dt)
@@ -30,7 +30,7 @@ y_n = quant.quantize(x_n)
 
 xhat_t = np.zeros_like(x_t)
 for n in ns:
-    xhat_t += x_n[n] * np.sinc((ts-n*ta -t0)/ ta)
+    xhat_t += y_n[n] * np.sinc((ts-n*ta -t0)/ ta)
 
 
 tabs = st.tabs((["Curva entrada x saida", "Sinais", "Tabela"]))
@@ -51,7 +51,7 @@ with tabs[1]:
     fig, ax = plt.subplots(figsize=(8,4))
     ax.plot(ts/1e-3,x_t,"C0",label="$x(t)$")
     ax.plot((ns*ta)/1e-3,x_n,"C2o",label="$x(n)$")
-    ax.plot((ns*ta)/1e-3,y_n,"C1o",label="$x(n)$")
+    ax.plot((ns*ta)/1e-3,y_n,"C1o",label="$y(n)$")
 
     ax.plot(ts/1e-3,xhat_t,"C3",label="$xhat_t(t)$")
 
