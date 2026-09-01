@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import streamlit as st
 
-st.header("Parte 2 -- Exercício 2-A")
+st.header("Parte 2 -- Exercício 2")
 
 # Aleatoridade
 
@@ -20,11 +20,32 @@ ns = 100        # Nº de simbolos de entrada
 dur = ns*ts     # Duração do sinal
 n_iters = 1000  # Numero de iterações
 
-a = np.sqrt(1/ts)
-u_n = rng.uniform (low=-3.0, high= 3.0, size=(n_iters, ns))
-pulse = komm.RectangularPulse()
-span = (-1,1)
-psd_teo_densidade = lambda f: 3.0* np.sinc(ts*f)**2
+letter = st.radio(
+    label="Questão",
+    options=["Letra (a)",  "Letra (b)"],
+    horizontal=True
+)
+
+if letter == "Letra (a)":
+    
+    a = np.sqrt(1/ts)
+    u_n = rng.uniform (low=-3.0, high= 3.0, size=(n_iters, ns))
+    pulse = komm.RectangularPulse()
+    span = (-1,1)
+    psd_teo_densidade = lambda f: 3.0* np.sinc(ts*f)**2
+
+else:
+    a = np.sqrt(1/ts)
+    alfa_n = rng.normal (loc=0, scale=1, size = (n_iters, ns+1))
+    u_n= alfa_n[:,1:] + alfa_n[:,:-1]
+    pulse= komm.SincPulse()
+    span = (-16,16)
+    psd_teo_densidade = lambda f: 4.0 * np.cos(np.pi*ts*f)**2 *(np.abs(ts*f) <=0.5)
+
+
+    pulse = komm.RectangularPulse()
+    span = (-1,1)
+    psd_teo_densidade = lambda f: 3.0* np.sinc(ts*f)**2
 
 # Geração de sinal PAM
 
